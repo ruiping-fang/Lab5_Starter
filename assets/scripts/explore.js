@@ -3,21 +3,29 @@
 window.addEventListener("DOMContentLoaded", init);
 
 function init() {
-  // TODO
   const voiceSelect = document.querySelector("#voice-select");
   const textarea = document.getElementById("text-to-speak");
   const button = document.querySelector("button");
   const img = document.querySelector("img");
 
   const synth = window.speechSynthesis;
-  let voices = synth.getVoices(); // return a list of supported voices
+  let voices;
+  const loadVoices = () => {
+    voices = synth.getVoices(); // return a list of supported voices
 
-  // map Voice objects to html option elements
-  for (let i = 0; i < voices.length; i++) {
-    const option = document.createElement("option");
-    option.textContent = `${voices[i].name} (${voices[i].lang})`;
-    option.setAttribute("value", voices[i].name);
-    voiceSelect.appendChild(option);
+    // map Voice objects to html option elements
+    for (let i = 0; i < voices.length; i++) {
+      const option = document.createElement("option");
+      option.textContent = `${voices[i].name} (${voices[i].lang})`;
+      option.setAttribute("value", voices[i].name);
+      voiceSelect.appendChild(option);
+    }
+  };
+
+  if ("onvoiceschanged" in synth) {
+    synth.onvoiceschanged = loadVoices;
+  } else {
+    loadVoices();
   }
 
   button.addEventListener("click", (event) => {
