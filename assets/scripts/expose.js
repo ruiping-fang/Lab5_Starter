@@ -21,7 +21,7 @@ function init() {
 
   const slider = document.getElementById("volume");
   const volumeIcon = document.querySelector("div img");
-  slider.addEventListener("change", (event) => {
+  slider.addEventListener("input", (event) => {
     let value = event.target.value;
     if (value == 0) {
       volumeIcon.src = "assets/icons/volume-level-0.svg";
